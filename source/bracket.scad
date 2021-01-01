@@ -2,58 +2,83 @@
 use <bolts.scad>;
 use <zcube.scad>;
 
-$fs = 0.1;
+bracket_offset = 25.4 / 2; // 1/2 inch.
+bracket_diameter = 25.4 / 4; // 1/4 inch.
+bracket_depth = bracket_offset * 3.5;
 
-hole_width = 25.4 / 2; // 1/2 inch.
-hole_diameter = 25.4 / 4; // 1/4 inch.
+// A gap between the back of the cabinet and the base of the hardware, to avoid hitting the cable tie attachment points :(
+bracket_gap = 4;
 
-height = 12;
-thickness = 4;
-distance = 112;
-width = distance+60;
-offset = (width-distance) / 2;
+module bracket_translate(x, y, offset = bracket_offset) {
+	translate([offset * x, offset * y, 0]) children();
+}
 
-// Hole diameter is 1/4 inch.
-module clip(size = hole_diameter, standoff = 0.2, gap = 1.6) {
-	offset = size/3;
+module bracket_clip(length = 8, thickness = 1.5) {
+	translate([-1.5, 0, length - thickness])
+	rotate([180, 0, 0])
+	threaded_hole(3, length);
 	
-	//scale([1, 2.2/3, 1])
-	intersection() {
-		#translate([offset, 0, -gap]) cube([size, size, gap*2], center=true);
-		
-		union() {
-			intersection() {
-				translate([0, 0, -gap]) cylinder(d=size,h=gap);
-				translate([offset, 0, -size]) cylinder(h=size,d=size);
+	#translate([0, 0, -5]) cylinder(d=6, h=5, $fn=32);
+}
+
+module bracket_hole(length = 6, thickness = 2) {
+	translate([0, 0, -thickness])
+	#threaded_hole(6, length+thickness);
+	
+	#translate([0, 0, -5]) cylinder(d=6, h=5, $fn=32);
+}
+
+module bracket(width = 10, length = 12, height = 34) {
+	front_offset = bracket_offset*(length+0.5);
+	middle_offset = bracket_offset*(width/2);
+	
+	color("grey") difference() {
+		render() difference() {
+			union() {
+				hull() {
+					translate([front_offset - bracket_depth/2, bracket_offset*width/2, 0])
+					rcube([bracket_depth, (width+1)*bracket_offset, height+bracket_gap], d=2);
+					
+					#translate([bracket_offset*length/2, bracket_offset*width/2, 0])
+					rcube([bracket_offset*5, (width+1)*bracket_offset, 6], d=2);
+				}
+				
+				translate([bracket_offset*length/2, bracket_offset*width/2, 0])
+				rcube([(length+1)*bracket_offset, (width+1)*bracket_offset, 6], d=2);
 			}
 			
-			translate([offset, 0, -gap*2]) cylinder(h=gap,d=size);
+			translate([front_offset, middle_offset, bracket_gap])
+			children();
 		}
-	}
-	
-	translate([0, 0, -standoff]) cylinder(d=size,h=standoff);
-}
-
-module fitting(size = hole_diameter, gap = 1.6) {
-		translate([0, 0, -gap*2]) cylinder(d=size,h=gap*2);
-}
-
-module bracket() {
-	color("green") {
-		translate([hole_width*-2, 0, 0]) clip();
-		translate([hole_width*0, 0, 0]) clip();
-		translate([hole_width*2, 0, 0]) clip();
-	}
-	
-	color("orange") {
-		/* translate([hole_width*2, 0, ]) fitting(); */
-	}
-	
-	difference() {
-		rcube([hole_width * 5, hole_width, 4], d=2);
 		
-		translate([hole_width*-1, 0, 0]) hole(6);
-		translate([hole_width*1, 0, 0]) hole(6);
+		bracket_translate(0, 0) bracket_hole();
+		bracket_translate(1, 0) bracket_clip();
+		bracket_translate(4, 0) bracket_clip();
+		bracket_translate(11, 0) bracket_clip();
+		bracket_translate(12, 0) bracket_clip();
+		
+		bracket_translate(0, width) bracket_hole();
+		bracket_translate(1, width) bracket_clip();
+		bracket_translate(4, width) bracket_clip();
+		bracket_translate(11, width) bracket_clip();
+		bracket_translate(12, width) bracket_clip();
+	}
+}
+
+module bracket_cover(width = 10, length = 12, height = 34, thickness = 8) {
+	front_offset = bracket_offset*(length+0.5);
+	middle_offset = bracket_offset*(width/2);
+	
+	color("grey") difference() {
+		render() difference() {
+			hull() {
+				translate([front_offset - bracket_depth/2, bracket_offset*width/2, height+bracket_gap])
+				rcube([bracket_depth, (width+1)*bracket_offset, thickness], d=2);
+			}
+			
+			translate([front_offset, middle_offset, bracket_gap])
+			children();
+		}
 	}
 }
 

@@ -23,7 +23,7 @@ module bracket_clip(length = 8, thickness = 1.5) {
 
 module bracket_hole(length = 6, thickness = 2) {
 	translate([0, 0, -thickness])
-	#threaded_hole(6, length+thickness);
+	threaded_hole(6, length+thickness);
 	
 	#translate([0, 0, -5]) cylinder(d=6, h=5, $fn=32);
 }
@@ -39,7 +39,7 @@ module bracket(width = 10, length = 12, height = 34) {
 					translate([front_offset - bracket_depth/2, bracket_offset*width/2, 0])
 					rcube([bracket_depth, (width+1)*bracket_offset, height+bracket_gap], d=2);
 					
-					#translate([bracket_offset*length/2, bracket_offset*width/2, 0])
+					translate([bracket_offset*length/2, bracket_offset*width/2, 0])
 					rcube([bracket_offset*5, (width+1)*bracket_offset, 6], d=2);
 				}
 				

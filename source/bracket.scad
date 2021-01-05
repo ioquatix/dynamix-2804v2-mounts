@@ -9,6 +9,8 @@ bracket_depth = bracket_offset * 3.5;
 // A gap between the back of the cabinet and the base of the hardware, to avoid hitting the cable tie attachment points :(
 bracket_gap = 4;
 
+function bracket_offset(x = 1) = bracket_offset * x;
+
 module bracket_translate(x, y, offset = bracket_offset) {
 	translate([offset * x, offset * y, 0]) children();
 }
@@ -26,6 +28,12 @@ module bracket_hole(length = 6, thickness = 2) {
 	threaded_hole(6, length+thickness);
 	
 	#translate([0, 0, -5]) cylinder(d=6, h=5, $fn=32);
+}
+
+module bracket_cube(size)
+{
+	bracket_translate(size[0]/2 - 0.5, size[1]/2 - 0.5)
+	rcube([size[0] * bracket_offset, size[1] * bracket_offset, size[2]], d=2);
 }
 
 module bracket(width = 10, length = 12, height = 34) {

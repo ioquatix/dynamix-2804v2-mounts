@@ -62,14 +62,14 @@ module bracket(width = 10, length = 12, height = 34) {
 		bracket_translate(0, 0) bracket_hole();
 		bracket_translate(1, 0) bracket_clip();
 		bracket_translate(4, 0) bracket_clip();
-		bracket_translate(11, 0) bracket_clip();
-		bracket_translate(12, 0) bracket_clip();
+		bracket_translate(length - 1, 0) bracket_clip();
+		bracket_translate(length, 0) bracket_clip();
 		
 		bracket_translate(0, width) bracket_hole();
 		bracket_translate(1, width) bracket_clip();
 		bracket_translate(4, width) bracket_clip();
-		bracket_translate(11, width) bracket_clip();
-		bracket_translate(12, width) bracket_clip();
+		bracket_translate(length - 1, width) bracket_clip();
+		bracket_translate(length, width) bracket_clip();
 	}
 }
 

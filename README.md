@@ -1,6 +1,6 @@
 # Dynamix 2804v2 Mounts
 
-This repository contains a number of parts which assist with mounting equipment to the [Dynamix HWS-2804V2 cabinet](http://www.dynamix.co.nz/home/netwbs/shw100/HWS-2804V2).
+This repository contains a number of parts which assist with mounting equipment to the [Dynamix HWS-* style cabinets]([http://www.dynamix.co.nz/home/netwbs/shw100/HWS-2804V2](https://www.dynamix.co.nz/78245)).
 
 ![2804 Cabinet with Equipment](photos/IMG_7216.jpg)
 
